@@ -6,7 +6,10 @@ import com.cque.nanshanluntan.common.R;
 import com.cque.nanshanluntan.domain.User;
 import com.cque.nanshanluntan.mapper.UserMapper;
 import com.cque.nanshanluntan.service.UserService;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpSession;
 
 
 @Service
@@ -16,7 +19,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return
      */
     @Override
-    public R login(String userName, String password) {
+    public R login(String userName, String password, HttpSession session) {
         System.out.println(userName+"---"+password);
 
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
@@ -31,6 +34,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if(password.equals(user.getPassword())){
             if(user.getLocked() == 1){
                 // 未锁定
+                session.setAttribute("id", user.getId());
+                session.setAttribute("userName", user.getUserName());
+
                 return new R(200, "登录成功", user);
             }
             return new R(201, "用户被锁定", null);
@@ -60,5 +66,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return new R(200, "注册成功", true);
         }
         return new R(201, "服务器错误，请稍后重试", false);
+    }
+
+    /**
+     * 退出登录
+     * @param session
+     * @return
+     */
+    @Override
+    public R logOut(HttpSession session) {
+        session.removeAttribute("id");
+        session.removeAttribute("userName");
+
+        return new R(200, "退出成功", true);
     }
 }

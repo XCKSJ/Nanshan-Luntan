@@ -3,6 +3,9 @@ package com.cque.nanshanluntan.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cque.nanshanluntan.common.R;
 import com.cque.nanshanluntan.domain.User;
+import org.springframework.http.HttpRequest;
+
+import javax.servlet.http.HttpSession;
 
 public interface UserService extends IService<User> {
     /**
@@ -11,7 +14,7 @@ public interface UserService extends IService<User> {
      * @param password 密码
      * @return
      */
-    R login(String userName, String password);
+    R login(String userName, String password, HttpSession session);
 
     /**
      * 注册
@@ -19,4 +22,11 @@ public interface UserService extends IService<User> {
      * @return
      */
     R register(User user);
+
+    /**
+     * 退出登录
+     * @param session
+     * @return
+     */
+    R logOut(HttpSession session);
 }
