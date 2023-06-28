@@ -1,4 +1,4 @@
-package com.cque.nanshanluntan.common;
+package com.cque.nanshanluntan.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

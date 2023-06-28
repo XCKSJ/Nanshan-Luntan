@@ -8,6 +8,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -39,11 +40,47 @@ public class UserController {
 
     /**
      * 退出登录
-     * @param session
      * @return
      */
     @GetMapping("/logOut")
     public R logOut(HttpSession session){
         return userService.logOut(session);
+    }
+
+    /**
+     * 获取缓存中的用户名
+     * @return
+     */
+    @GetMapping("/getUserName")
+    public R getUserName(HttpSession session){
+        return userService.getUserName(session);
+    }
+
+    /**
+     * 获取所有用户数据
+     * @return
+     */
+    @GetMapping("/getUserAll")
+    public R getUserAll(Integer currentPage, Integer pageSize){
+        return userService.getUserAll(currentPage, pageSize);
+    }
+
+    /**
+     * 修改用户信息
+     * @return
+     */
+    @PostMapping("/updateUser")
+    public R updateUser(@RequestBody User user){
+        return userService.updateUser(user);
+    }
+
+    /**
+     * 删除用户
+     * @param id 用户id
+     * @return
+     */
+    @DeleteMapping("/deleteUserById")
+    public R deleteUserById(Integer id){
+        return userService.deleteUserById(id);
     }
 }

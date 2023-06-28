@@ -1,6 +1,8 @@
 package com.cque.nanshanluntan.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cque.nanshanluntan.common.R;
 import com.cque.nanshanluntan.domain.User;
@@ -9,6 +11,7 @@ import com.cque.nanshanluntan.service.UserService;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
@@ -70,7 +73,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     /**
      * 退出登录
-     * @param session
      * @return
      */
     @Override
@@ -79,5 +81,56 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         session.removeAttribute("userName");
 
         return new R(200, "退出成功", true);
+    }
+
+    /**
+     * 获取缓存中的用户名
+     * @return
+     */
+    @Override
+    public R getUserName(HttpSession session) {
+        Object userName = session.getAttribute("userName");
+        return new R(200, "用户名", userName);
+    }
+
+    /**
+     * 获取一页用户数据
+     * @return
+     */
+    @Override
+    public R getUserAll(Integer currentPage, Integer pageSize) {
+        Page<User> page = this.page(new Page<>(currentPage, pageSize));
+        if(page != null){
+            return new R(200, "查询成功", page);
+        }
+        return new R(201, "网络不好，请重试", null);
+    }
+
+    /**
+     * 修改用户信息
+     * @return
+     */
+    @Override
+    public R updateUser(User user) {
+        boolean update = this.updateById(user);
+        if(update){
+            return new R(200, "修改成功", true);
+        }
+        return new R(201, "修改失败", false);
+    }
+
+    /**
+     * 删除用户
+     * @param id 用户id
+     * @return
+     */
+    @Override
+    public R deleteUserById(Integer id) {
+        boolean remove = this.removeById(id);
+
+        if(remove){
+            return new R(200, "删除成功", true);
+        }
+        return new R(201, "删除失败", false);
     }
 }
