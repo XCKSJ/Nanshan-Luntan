@@ -57,7 +57,7 @@ public class UserController {
     }
 
     /**
-     * 获取所有用户数据
+     * 获取一页用户数据
      * @return
      */
     @GetMapping("/getUserAll")
