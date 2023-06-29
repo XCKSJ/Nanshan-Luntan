@@ -54,4 +54,10 @@ public interface UserService extends IService<User> {
      * @return
      */
     R deleteUserById(Integer id);
+
+    /**
+     * 获取登录用户信息
+     * @return
+     */
+    R getUser(HttpSession session);
 }

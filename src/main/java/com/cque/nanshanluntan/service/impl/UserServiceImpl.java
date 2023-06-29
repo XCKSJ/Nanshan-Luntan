@@ -133,4 +133,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         return new R(201, "删除失败", false);
     }
+
+    /**
+     * 获取登录用户信息
+     * @return
+     */
+    @Override
+    public R getUser(HttpSession session) {
+        String userName = (String) session.getAttribute("userName");
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getUserName, userName);
+
+        User user = this.getOne(queryWrapper);
+        return new R(200, "用户名", user);
+    }
 }

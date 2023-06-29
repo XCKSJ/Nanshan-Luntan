@@ -69,7 +69,7 @@ public class UserController {
      * 修改用户信息
      * @return
      */
-    @PostMapping("/updateUser")
+    @PostMapping("/updateUserById")
     public R updateUser(@RequestBody User user){
         return userService.updateUser(user);
     }
@@ -82,5 +82,14 @@ public class UserController {
     @DeleteMapping("/deleteUserById")
     public R deleteUserById(Integer id){
         return userService.deleteUserById(id);
+    }
+
+    /**
+     * 获取登录用户信息
+     * @return
+     */
+    @GetMapping("/getUser")
+    public R getUser(HttpSession session){
+        return userService.getUser(session);
     }
 }
